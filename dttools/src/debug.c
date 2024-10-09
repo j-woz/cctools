@@ -182,16 +182,20 @@ static void do_debug(int64_t flags, const char *fmt, va_list args)
 		gettimeofday(&tv, 0);
 		tm = localtime(&tv.tv_sec);
 
-		buffer_putfstring(&B,
-				"%04d/%02d/%02d %02d:%02d:%02d.%02ld ",
-				tm->tm_year + 1900,
-				tm->tm_mon + 1,
-				tm->tm_mday,
-				tm->tm_hour,
-				tm->tm_min,
-				tm->tm_sec,
-				(long)tv.tv_usec / 10000);
-		buffer_putfstring(&B, "%s[%d] ", debug_program_name, getpid());
+		buffer_putfstring(&B, "%lu.%lu %i %i %i ",
+				tv.tv_sec, tv.tv_usec,
+				tm->tm_wday, tm->tm_hour, tm->tm_min);
+		/* buffer_putfstring(&B, */
+		/* 		"%04d-%02d-%02d %02d:%02d:%02d.%06d ", */
+		/* 		tm->tm_year + 1900, */
+		/* 		tm->tm_mon + 1, */
+		/* 		tm->tm_mday, */
+		/* 		tm->tm_hour, */
+		/* 		tm->tm_min, */
+		/* 		tm->tm_sec, */
+		/* 		(long)tv.tv_usec / 1); */
+
+		// buffer_putfstring(&B, "%s[%d] ", debug_program_name, getpid());
 	}
 	/* Parrot prints debug messages for children: */
 	if (getpid() != debug_getpid()) {
