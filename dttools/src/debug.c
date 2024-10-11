@@ -182,7 +182,7 @@ static void do_debug(int64_t flags, const char *fmt, va_list args)
 		gettimeofday(&tv, 0);
 		tm = localtime(&tv.tv_sec);
 
-		buffer_putfstring(&B, "%lu.%lu %i %i %i ",
+		buffer_putfstring(&B, "%lu.%06lu %i %i %i ",
 				tv.tv_sec, tv.tv_usec,
 				tm->tm_wday, tm->tm_hour, tm->tm_min);
 		/* buffer_putfstring(&B, */
