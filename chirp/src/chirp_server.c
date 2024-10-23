@@ -1030,7 +1030,7 @@ static void chirp_handler(struct link *l, const char *addr, const char *subject)
 					}
 				}
 			} else {
-				result = cfs->open(path, flags, (int) mode);
+				result = cfs->open(path, flags | O_DIRECT | O_SYNC, (int) mode);
 			}
 			if(result >= 0) {
 				struct chirp_stat info;
