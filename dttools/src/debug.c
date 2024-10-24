@@ -155,6 +155,7 @@ void debug_set_flag_name(int64_t flag, const char *name)
 	}
 }
 
+__attribute__((unused))
 static const char *debug_flags_to_name(int64_t flags)
 {
 	struct flag_info *i;
@@ -169,8 +170,11 @@ static const char *debug_flags_to_name(int64_t flags)
 
 static void do_debug(int64_t flags, const char *fmt, va_list args)
 {
+	static pid_t pid = 0;
 	buffer_t B;
 	char ubuf[1 << 16];
+
+	if (pid == 0) pid = getpid();
 
 	buffer_init(&B);
 	buffer_ubuf(&B, ubuf, sizeof(ubuf));
@@ -182,8 +186,9 @@ static void do_debug(int64_t flags, const char *fmt, va_list args)
 		gettimeofday(&tv, 0);
 		tm = localtime(&tv.tv_sec);
 
-		buffer_putfstring(&B, "%lu.%06lu %i %i %i ",
-				tv.tv_sec, tv.tv_usec,
+		buffer_putfstring(&B, "%lu.%06lu %li %i %i %i ",
+				tv.tv_sec, (long) tv.tv_usec,
+				(long) pid,
 				tm->tm_wday, tm->tm_hour, tm->tm_min);
 		/* buffer_putfstring(&B, */
 		/* 		"%04d-%02d-%02d %02d:%02d:%02d.%06d ", */
@@ -201,7 +206,7 @@ static void do_debug(int64_t flags, const char *fmt, va_list args)
 	if (getpid() != debug_getpid()) {
 		buffer_putfstring(&B, "<child:%d> ", (int)debug_getpid());
 	}
-	buffer_putfstring(&B, "%s: ", debug_flags_to_name(flags));
+	// buffer_putfstring(&B, "%s: ", debug_flags_to_name(flags));
 
 	buffer_putvfstring(&B, fmt, args);
 	while (isspace(buffer_tostring(&B)[buffer_pos(&B) - 1]))
