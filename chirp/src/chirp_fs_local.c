@@ -130,9 +130,9 @@ static const char nulpath[1] = "";
 	goto out;\
 out:\
 	if (rc == -1)\
-		debug(D_LOCAL, "= -1 (errno = %d; `%s')", errno, strerror(errno));\
+		debug(D_LOCAL, "=> -1 (errno = %d; `%s')", errno, strerror(errno));\
 	else\
-		debug(D_LOCAL, "= %" PRId64, rc);\
+		debug(D_LOCAL, "=> %" PRId64, rc);\
 	CLOSE_DIRFD(dirfd);\
 	return rc;
 
