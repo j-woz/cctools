@@ -1638,6 +1638,7 @@ static void chirp_receive(struct link *link, char url[CHIRP_PATH_MAX])
 	char addr[LINK_ADDRESS_MAX];
 	int port;
 
+	memset(addr, '\0', LINK_ADDRESS_MAX);
 	link_address_remote(link, addr, &port);
 
 	change_process_title("chirp_server [%s:%d] [backend starting]", addr, port, typesubject);
